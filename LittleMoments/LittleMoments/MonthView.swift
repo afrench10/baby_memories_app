@@ -16,8 +16,8 @@ struct MonthView: View {
                     ForEach(data.weeks, id: \.self) { week in
                         WeekDivider(week: week)
                             .padding(.bottom, 10)
-                        ForEach(data.memories(in: week)) { memory in
-                            MemoryCard(memory: memory)
+                        ForEach(data.narrativeMemories(in: week)) { memory in
+                            memoryRow(memory)
                                 .padding(.bottom, 14)
                         }
                     }
@@ -30,6 +30,18 @@ struct MonthView: View {
         }
         .background(DotGridBackground())
         .navigationBarBackButtonHidden(true)
+        .navigationDestination(for: Day.self) { DayView(day: $0) }
+    }
+
+    // Each card opens the full day behind it (§3A).
+    @ViewBuilder
+    private func memoryRow(_ memory: Memory) -> some View {
+        if let day = data.day(for: memory.dayLabel) {
+            NavigationLink(value: day) { MemoryCard(memory: memory) }
+                .buttonStyle(.plain)
+        } else {
+            MemoryCard(memory: memory)
+        }
     }
 
     // MARK: Header — ‹ Maya     March     '26 ›

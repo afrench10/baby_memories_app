@@ -103,6 +103,37 @@ struct TagPill: View {
     }
 }
 
+/// A flexible tag/affordance pill (the larger size used on the Day and Memory
+/// screens, and the white-on-photo overlay variant on the §3B hero).
+struct WPill: View {
+    let text: String
+    var fg: Color
+    var bg: Color = .clear
+    var border: Color
+    var size: CGFloat = 10
+
+    var body: some View {
+        Text(text)
+            .font(Theme.Font.mono(size))
+            .foregroundStyle(fg)
+            .padding(.horizontal, 9)
+            .padding(.vertical, 3)
+            .background(bg)
+            .clipShape(Capsule())
+            .overlay(Capsule().strokeBorder(border, lineWidth: 1.5))
+    }
+
+    /// Accent (firsts / milestones) pill.
+    static func accent(_ text: String) -> WPill {
+        WPill(text: text, fg: Theme.Palette.accent, bg: Theme.Palette.accentBg,
+              border: Theme.Palette.accent)
+    }
+    /// Neutral outline pill (e.g. "+ tag").
+    static func neutral(_ text: String) -> WPill {
+        WPill(text: text, fg: Theme.Palette.muted, border: Theme.Palette.lineCard)
+    }
+}
+
 /// Accent "12 this mo." count chip.
 struct CountTag: View {
     let text: String
