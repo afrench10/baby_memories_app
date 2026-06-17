@@ -23,6 +23,7 @@ enum Theme {
         static let line      = Color(hex: 0xC8C2B5) // dashed dividers
         static let lineSoft  = Color(hex: 0xB8B2A6) // dashed placeholders
         static let lineCard  = Color(hex: 0xC2BCB0) // faint borders
+        static let rule      = Color(hex: 0xECE7DC) // thin hairline rules
         static let grab      = Color(hex: 0xDDD8CC) // sheet grab handle
 
         static let accent    = Color(hex: 0xC2755A) // terracotta accent

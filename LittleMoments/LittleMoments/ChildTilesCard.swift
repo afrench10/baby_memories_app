@@ -5,7 +5,6 @@ import SwiftUI
 struct ChildTilesCard: View {
     let children: [Child]
     var onAddChild: () -> Void = {}
-    var onOpenChild: (Child) -> Void = { _ in }
 
     private let columns = [GridItem(.flexible(), spacing: 12),
                            GridItem(.flexible(), spacing: 12)]
@@ -19,7 +18,7 @@ struct ChildTilesCard: View {
 
                 LazyVGrid(columns: columns, spacing: 12) {
                     ForEach(children) { child in
-                        Button { onOpenChild(child) } label: { ChildTile(child: child) }
+                        NavigationLink(value: child) { ChildTile(child: child) }
                             .buttonStyle(.plain)
                     }
                     Button(action: onAddChild) { AddTile() }
@@ -73,8 +72,10 @@ private struct AddTile: View {
 }
 
 #Preview {
-    ZStack {
-        DotGridBackground()
-        ChildTilesCard(children: Child.sample)
+    NavigationStack {
+        ZStack {
+            DotGridBackground()
+            ChildTilesCard(children: Child.sample)
+        }
     }
 }

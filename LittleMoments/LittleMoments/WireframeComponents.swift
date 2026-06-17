@@ -82,6 +82,27 @@ struct PhoneCard<Content: View>: View {
     }
 }
 
+/// A metadata tag chip. Accent tags (firsts / milestones) get the terracotta
+/// treatment; neutral tags use a faint outline.
+struct TagPill: View {
+    let tag: Tag
+    var body: some View {
+        Text(tag.label)
+            .font(Theme.Font.mono(9))
+            .foregroundStyle(tag.isAccent ? Theme.Palette.accent : Theme.Palette.muted3)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 2)
+            .background(tag.isAccent ? Theme.Palette.accentBg : Color.clear)
+            .clipShape(Capsule())
+            .overlay(
+                Capsule().strokeBorder(
+                    tag.isAccent ? Theme.Palette.accent : Theme.Palette.lineCard,
+                    lineWidth: 1.5
+                )
+            )
+    }
+}
+
 /// Accent "12 this mo." count chip.
 struct CountTag: View {
     let text: String

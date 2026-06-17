@@ -14,35 +14,40 @@ struct HomeView: View {
     private let children = Child.sample
 
     var body: some View {
-        ZStack {
-            DotGridBackground()
+        NavigationStack {
+            ZStack {
+                DotGridBackground()
 
-            VStack(spacing: 22) {
-                Picker("Layout", selection: $layout) {
-                    ForEach(Layout.allCases) { Text($0.rawValue).tag($0) }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal, 40)
-                .padding(.top, 8)
-
-                Spacer(minLength: 0)
-
-                Group {
-                    switch layout {
-                    case .list:  ChildListCard(children: children)
-                    case .tiles: ChildTilesCard(children: children)
+                VStack(spacing: 22) {
+                    Picker("Layout", selection: $layout) {
+                        ForEach(Layout.allCases) { Text($0.rawValue).tag($0) }
                     }
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal, 40)
+                    .padding(.top, 8)
+
+                    Spacer(minLength: 0)
+
+                    Group {
+                        switch layout {
+                        case .list:  ChildListCard(children: children)
+                        case .tiles: ChildTilesCard(children: children)
+                        }
+                    }
+                    .transition(.opacity)
+
+                    Spacer(minLength: 0)
+
+                    Text(layout == .list ? "1A · Children as a list" : "1B · Children as photo tiles")
+                        .font(Theme.Font.mono(10))
+                        .foregroundStyle(Theme.Palette.muted3)
+                        .padding(.bottom, 10)
                 }
-                .transition(.opacity)
-
-                Spacer(minLength: 0)
-
-                Text(layout == .list ? "1A · Children as a list" : "1B · Children as photo tiles")
-                    .font(Theme.Font.mono(10))
-                    .foregroundStyle(Theme.Palette.muted3)
-                    .padding(.bottom, 10)
+                .animation(.easeInOut(duration: 0.2), value: layout)
             }
-            .animation(.easeInOut(duration: 0.2), value: layout)
+            .navigationDestination(for: Child.self) { child in
+                MonthView(data: .sample(for: child))
+            }
         }
     }
 }

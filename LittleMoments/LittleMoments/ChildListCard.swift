@@ -5,7 +5,6 @@ import SwiftUI
 struct ChildListCard: View {
     let children: [Child]
     var onAddChild: () -> Void = {}
-    var onOpenChild: (Child) -> Void = { _ in }
 
     var body: some View {
         PhoneCard {
@@ -30,7 +29,7 @@ struct ChildListCard: View {
 
                 VStack(spacing: 12) {
                     ForEach(children) { child in
-                        Button { onOpenChild(child) } label: { ChildRow(child: child) }
+                        NavigationLink(value: child) { ChildRow(child: child) }
                             .buttonStyle(.plain)
                     }
                     AddRow(label: "+ Add a child", action: onAddChild)
@@ -90,8 +89,10 @@ private struct AddRow: View {
 }
 
 #Preview {
-    ZStack {
-        DotGridBackground()
-        ChildListCard(children: Child.sample)
+    NavigationStack {
+        ZStack {
+            DotGridBackground()
+            ChildListCard(children: Child.sample)
+        }
     }
 }
