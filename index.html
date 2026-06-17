@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baby memory app — Home wireframes (§1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     PALETTE — wireframe tokens. Everything is driven from here,
+     so iterating on the color palette later is a few-line change.
+     ============================================================ */
+  :root {
+    --bg:          #E9E5DC;  /* page cream            */
+    --dot-grid:    #d9d4c8;  /* background dot pattern */
+    --ink:         #2e2b27;  /* near-black ink        */
+    --ink-soft:    #3a352e;  /* body handwriting      */
+    --paper:       #ffffff;  /* card surface          */
+    --paper-warm:  #fffdf8;  /* warm card surface     */
+    --muted:       #9a9488;  /* meta text             */
+    --muted-2:     #6f6a60;  /* secondary body        */
+    --muted-3:     #8a857b;  /* captions              */
+    --line:        #c8c2b5;  /* dashed dividers       */
+    --line-soft:   #b8b2a6;  /* dashed placeholders   */
+    --line-card:   #c2bcb0;  /* faint borders         */
+    --grab:        #ddd8cc;  /* sheet grab handle     */
+
+    --accent:      #c2755a;  /* terracotta accent     */
+    --accent-bg:   #faf3ee;  /* accent wash           */
+
+    /* striped image placeholder */
+    --ph-a: #ece8df;
+    --ph-b: #f6f3ec;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image: radial-gradient(var(--dot-grid) 1px, transparent 1px);
+    background-size: 22px 22px;
+    font-family: 'Kalam', cursive;
+    color: var(--ink);
+  }
+
+  .canvas { max-width: 1280px; margin: 0 auto; padding: 44px 32px 110px; }
+
+  /* ---------- document header ---------- */
+  .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 3px;
+    color: var(--muted); text-transform: uppercase;
+  }
+  h1.title {
+    font-weight: 700; font-size: 46px; line-height: 1.05;
+    color: var(--ink); margin: 10px 0 6px;
+  }
+  .lede {
+    font-family: 'Space Mono', monospace;
+    font-size: 12.5px; line-height: 1.7;
+    color: var(--muted-2); max-width: 660px; margin: 0;
+  }
+
+  /* ---------- flow strip ---------- */
+  .flow {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    margin-top: 26px; padding: 16px 18px; width: fit-content;
+    background: var(--paper-warm);
+    border: 2px solid var(--ink); border-radius: 14px;
+    box-shadow: 5px 5px 0 rgba(46,43,39,0.08);
+  }
+  .flow-label {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    color: var(--muted); margin-right: 6px;
+  }
+  .pill-step {
+    font-weight: 700; font-size: 16px; padding: 5px 13px;
+    border: 2px solid var(--ink); border-radius: 20px; background: var(--paper);
+  }
+  .pill-step.active {
+    border-color: var(--accent); background: var(--accent-bg); color: var(--accent);
+  }
+  .arrow { font-size: 18px; color: var(--accent); }
+
+  /* ---------- section heading ---------- */
+  .section-head {
+    display: flex; align-items: baseline; gap: 12px;
+    margin-top: 64px; border-bottom: 2px dashed var(--line); padding-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .section-num {
+    font-family: 'Space Mono', monospace; font-weight: 700; font-size: 13px;
+    color: #fff; background: var(--ink); border-radius: 50%;
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .section-title { font-weight: 700; font-size: 26px; color: var(--ink); }
+  .section-meta { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
+
+  /* ---------- variant layout ---------- */
+  .variants {
+    display: flex; flex-wrap: wrap; gap: 42px;
+    margin-top: 30px; align-items: flex-start;
+  }
+  .variant { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .variant-name { font-weight: 700; font-size: 16px; color: var(--ink); }
+  .variant-note {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    color: var(--muted-3); max-width: 280px; text-align: center; line-height: 1.5;
+  }
+
+  /* ---------- phone frame ---------- */
+  .phone {
+    width: 282px; background: var(--paper);
+    border: 2.5px solid var(--ink); border-radius: 30px;
+    padding: 14px 14px 18px;
+    box-shadow: 7px 7px 0 rgba(46,43,39,0.1);
+  }
+  .grab {
+    width: 64px; height: 6px; background: var(--grab);
+    border-radius: 3px; margin: 2px auto 16px;
+  }
+  .app-name { font-weight: 700; font-size: 20px; color: var(--ink); }
+
+  /* top bar (1A) */
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .avatar-btn { width: 26px; height: 26px; border: 2px solid var(--ink); border-radius: 50%; }
+
+  .kicker {
+    font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px;
+    color: var(--muted); text-transform: uppercase; margin-bottom: 10px;
+  }
+
+  /* child row (1A) */
+  .child-list { display: flex; flex-direction: column; gap: 12px; }
+  .child-row {
+    display: flex; align-items: center; gap: 12px;
+    border: 2px solid var(--ink); border-radius: 16px; padding: 12px;
+  }
+  .avatar {
+    width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+    border: 1.5px solid var(--line-card);
+    background-image: repeating-linear-gradient(45deg,
+      var(--ph-a), var(--ph-a) 5px, var(--ph-b) 5px, var(--ph-b) 10px);
+  }
+  .child-row .meta { flex: 1; }
+  .child-name { font-weight: 700; font-size: 18px; color: var(--ink); }
+  .child-age { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); }
+  .count-tag {
+    font-family: 'Space Mono', monospace; font-size: 10px;
+    padding: 3px 8px; border-radius: 11px;
+    background: var(--accent-bg); border: 1.5px solid var(--accent); color: var(--accent);
+  }
+
+  /* add-child affordances */
+  .add-row {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    border: 2px dashed var(--line-soft); border-radius: 16px; padding: 14px;
+    font-weight: 700; font-size: 16px; color: var(--muted);
+  }
+
+  /* tiles (1B) */
+  .tile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tile {
+    aspect-ratio: 1; border-radius: 18px; border: 2px solid var(--ink);
+    position: relative; overflow: hidden;
+    display: flex; align-items: flex-end; padding: 10px;
+    background-image: repeating-linear-gradient(45deg,
+      var(--ph-a), var(--ph-a) 6px, var(--ph-b) 6px, var(--ph-b) 12px);
+  }
+  .tile-name {
+    font-weight: 700; font-size: 18px; color: var(--ink);
+    background: rgba(255,253,248,0.8); border-radius: 8px; padding: 1px 8px;
+  }
+  .tile.add {
+    border: 2px dashed var(--line-soft);
+    align-items: center; justify-content: center; text-align: center;
+    background: none; line-height: 1.2;
+    font-weight: 700; font-size: 15px; color: var(--muted);
+  }
+
+  @media (max-width: 560px) {
+    .canvas { padding: 28px 18px 80px; }
+    h1.title { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+
+    <!-- ============ DOCUMENT HEADER ============ -->
+    <div class="eyebrow">Wireframes · low-fi exploration · v1</div>
+    <h1 class="title">Baby memory app — first sketches</h1>
+    <p class="lede">Rough structure only — shapes, flow, and a few competing ideas for the core <b>Home</b> screen. Not visual design. Pen-and-paper fidelity on purpose, so we can argue about layout before anyone writes code.</p>
+
+    <!-- flow strip -->
+    <div class="flow">
+      <span class="flow-label">FLOW</span>
+      <span class="pill-step active">Home</span>
+      <span class="arrow">→</span>
+      <span class="pill-step">Child</span>
+      <span class="arrow">→</span>
+      <span class="pill-step">Month / Year</span>
+      <span class="arrow">→</span>
+      <span class="pill-step">Week / Day</span>
+      <span class="arrow">→</span>
+      <span class="pill-step">Memory</span>
+    </div>
+
+    <!-- ============ SECTION 1 — HOME ============ -->
+    <div class="section-head">
+      <span class="section-num">1</span>
+      <span class="section-title">Home — who are we remembering?</span>
+      <span class="section-meta">one entry per child · two takes</span>
+    </div>
+
+    <div class="variants">
+
+      <!-- 1A — list -->
+      <div class="variant">
+        <div class="variant-name">1A · Children as a list</div>
+        <div class="variant-note">Scannable rows, each showing this month's count. Calm, scales to many kids.</div>
+        <div class="phone">
+          <div class="grab"></div>
+          <div class="topbar">
+            <span class="app-name">Little Moments</span>
+            <span class="avatar-btn"></span>
+          </div>
+          <div class="kicker">Your kids</div>
+          <div class="child-list">
+            <div class="child-row">
+              <span class="avatar"></span>
+              <div class="meta">
+                <div class="child-name">Maya</div>
+                <div class="child-age">14 months</div>
+              </div>
+              <span class="count-tag">12 this mo.</span>
+            </div>
+            <div class="child-row">
+              <span class="avatar"></span>
+              <div class="meta">
+                <div class="child-name">Theo</div>
+                <div class="child-age">3 years</div>
+              </div>
+              <span class="count-tag">5 this mo.</span>
+            </div>
+            <div class="add-row">+ Add a child</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1B — tiles -->
+      <div class="variant">
+        <div class="variant-name">1B · Children as photo tiles</div>
+        <div class="variant-note">Warmer, face-first. Best for 1–4 kids; the photo is the hook.</div>
+        <div class="phone">
+          <div class="grab"></div>
+          <div class="app-name" style="margin-bottom:14px;">Little Moments</div>
+          <div class="tile-grid">
+            <div class="tile"><span class="tile-name">Maya</span></div>
+            <div class="tile"><span class="tile-name">Theo</span></div>
+            <div class="tile add">+ Add<br>a child</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+</html>
