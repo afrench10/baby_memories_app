@@ -103,6 +103,38 @@ struct TagPill: View {
     }
 }
 
+/// Simple wrapping layout for tag chips (flex-wrap equivalent).
+struct FlowLayout: Layout {
+    var spacing: CGFloat = 6
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let maxWidth = proposal.width ?? .infinity
+        var x: CGFloat = 0, y: CGFloat = 0, rowHeight: CGFloat = 0
+        for view in subviews {
+            let size = view.sizeThatFits(.unspecified)
+            if x + size.width > maxWidth && x > 0 {
+                x = 0; y += rowHeight + spacing; rowHeight = 0
+            }
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+        return CGSize(width: proposal.width ?? x, height: y + rowHeight)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var x = bounds.minX, y = bounds.minY, rowHeight: CGFloat = 0
+        for view in subviews {
+            let size = view.sizeThatFits(.unspecified)
+            if x + size.width > bounds.maxX && x > bounds.minX {
+                x = bounds.minX; y += rowHeight + spacing; rowHeight = 0
+            }
+            view.place(at: CGPoint(x: x, y: y), anchor: .topLeading, proposal: ProposedViewSize(size))
+            x += size.width + spacing
+            rowHeight = max(rowHeight, size.height)
+        }
+    }
+}
+
 /// A flexible tag/affordance pill (the larger size used on the Day and Memory
 /// screens, and the white-on-photo overlay variant on the §3B hero).
 struct WPill: View {
@@ -131,6 +163,24 @@ struct WPill: View {
     /// Neutral outline pill (e.g. "+ tag").
     static func neutral(_ text: String) -> WPill {
         WPill(text: text, fg: Theme.Palette.muted, border: Theme.Palette.lineCard)
+    }
+}
+
+/// The global "+" capture button (floating action button).
+struct AddButton: View {
+    var action: () -> Void
+    var body: some View {
+        Button(action: action) {
+            Text("+")
+                .font(Theme.Font.kalam(32, bold: true))
+                .foregroundStyle(.white)
+                .frame(width: 60, height: 60)
+                .background(Theme.Palette.accent)
+                .clipShape(Circle())
+                .overlay(Circle().strokeBorder(Theme.Palette.ink, lineWidth: 2))
+                .sketchShadow(5, opacity: 0.18)
+        }
+        .buttonStyle(.plain)
     }
 }
 

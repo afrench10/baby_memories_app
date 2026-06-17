@@ -6,6 +6,7 @@ import SwiftUI
 struct DayView: View {
     let day: Day
     @Environment(\.dismiss) private var dismiss
+    @State private var showAdd = false
 
     var body: some View {
         ScrollView {
@@ -24,7 +25,8 @@ struct DayView: View {
                             .buttonStyle(.plain)
                             .padding(.bottom, 12)
                     }
-                    AddBlock()
+                    Button { showAdd = true } label: { AddBlock() }
+                        .buttonStyle(.plain)
                 }
             }
             .frame(maxWidth: 360)
@@ -35,6 +37,12 @@ struct DayView: View {
         .background(DotGridBackground())
         .navigationBarBackButtonHidden(true)
         .navigationDestination(for: Memory.self) { MemoryDetailView(memory: $0) }
+        .sheet(isPresented: $showAdd) {
+            AddMemoryView(childName: day.childName)
+                .presentationDetents([.fraction(0.62), .large])
+                .presentationDragIndicator(.hidden)
+                .presentationCornerRadius(22)
+        }
     }
 
     private var header: some View {

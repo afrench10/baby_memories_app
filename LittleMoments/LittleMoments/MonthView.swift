@@ -6,6 +6,7 @@ import SwiftUI
 struct MonthView: View {
     let data: MonthData
     @Environment(\.dismiss) private var dismiss
+    @State private var showAdd = false
 
     var body: some View {
         ScrollView {
@@ -31,6 +32,15 @@ struct MonthView: View {
         .background(DotGridBackground())
         .navigationBarBackButtonHidden(true)
         .navigationDestination(for: Day.self) { DayView(day: $0) }
+        .overlay(alignment: .bottomTrailing) {
+            AddButton { showAdd = true }.padding(20)
+        }
+        .sheet(isPresented: $showAdd) {
+            AddMemoryView(childName: data.childName)
+                .presentationDetents([.fraction(0.62), .large])
+                .presentationDragIndicator(.hidden)
+                .presentationCornerRadius(22)
+        }
     }
 
     // Each card opens the full day behind it (§3A).
